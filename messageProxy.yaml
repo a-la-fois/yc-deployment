@@ -17,11 +17,11 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "message-proxy"
         dapr.io/app-port: "3000"
-        dapr.io/config: "tracing"
     spec:
       containers:
         - name: message-proxy
           image: cr.yandex/crpmiu1h5mdish4lqlu2/message-proxy:0.0.3
+          command: ["node", "./packages/messageProxy/dist/main.js"]
           ports:
             - containerPort: 3000
           env:
