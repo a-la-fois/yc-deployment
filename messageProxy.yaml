@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messageProxy-deployment
+  labels:
+    app: messageProxy
+spec:
+  replica: 4
+  selector:
+    matchLabels:
+      app: messageProxy
+  template:
+    metadata:
+      labels:
+        app: messageProxy
+    spec:
+      containers:
+        - name: messageProxy
+          image: cr.yandex/crpmiu1h5mdish4lqlu2/message-proxy:0.0.2
+
