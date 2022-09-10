@@ -1,20 +1,55 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: messageProxy-deployment
+  name: message-proxy-deployment
   labels:
-    app: messageProxy
+    app: message-proxy
 spec:
-  replica: 4
+  replicas: 1
   selector:
     matchLabels:
-      app: messageProxy
+      app: message-proxy
   template:
     metadata:
       labels:
-        app: messageProxy
+        app: message-proxy
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "message-proxy"
+        dapr.io/app-port: "3000"
+        dapr.io/config: "tracing"
     spec:
       containers:
-        - name: messageProxy
+        - name: message-proxy
           image: cr.yandex/crpmiu1h5mdish4lqlu2/message-proxy:0.0.2
+          ports:
+            - containerPort: 3000
+          env:
+            - name: KAFKA_CHANGES_TOPIC 
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: kafka-changes-topic
 
+            - name: KAFKA_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: kafka-hosts 
+            - name: KAFKA_CA_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: kafka-ca-path
+
+          volumeMounts:
+            - name: yc-cert
+              mountPath: "/config"
+              readOnly: true
+      volumes:
+        - name: yc-cert
+          configMap:
+            name: config
+            items:
+              - key: 'YandexCA.crt'
+                path: 'YandexCA.crt'
