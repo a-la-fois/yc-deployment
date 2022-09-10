@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doc-handler-deployment
+  labels:
+    app: doc-handler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: doc-handler
+  template:
+    metadata:
+      labels:
+        app: doc-handler
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "doc-handler"
+        dapr.io/app-port: "3000"
+    spec:
+      containers:
+        - name: doc-handler
+          image: cr.yandex/crpmiu1h5mdish4lqlu2/doc-handler:0.0.2
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI 
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+            - name: SERVER_HOST 
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: doc-handler-host
+            - name: SERVER_PORT 
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: doc-handler-port
+
+
+
