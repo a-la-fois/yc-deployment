@@ -67,3 +67,21 @@ spec:
             items:
               - key: 'YandexCA.crt'
                 path: 'YandexCA.crt'
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: message-proxy-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: message-proxy
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
+
