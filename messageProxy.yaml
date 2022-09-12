@@ -5,7 +5,7 @@ metadata:
   labels:
     app: message-proxy
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: message-proxy
