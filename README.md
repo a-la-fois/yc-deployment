@@ -22,7 +22,7 @@ For now we use managed Kafka cluster, however mongo and redis are deployed in a 
     cp example.secret.yaml secret.yaml
     ```
     
-    Set values to a `secret.yaml`
+    Set values to `secret.yaml`
     ```yaml
     apiVersion: v1
     kind: Secret
@@ -76,7 +76,8 @@ For now we use managed Kafka cluster, however mongo and redis are deployed in a 
     ```shell
     kubectl apply -f mongo.yaml
     ```
-6. Create Dapr state store component
+6. Create Dapr state store component.
+
     The state store is needed for actors
     ```shell
     kubectl apply -f stateStore.yaml
