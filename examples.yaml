@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: examples-deployment
+  labels:
+    app: examples
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: examples
+  template:
+    metadata:
+      labels:
+        app: examples
+    spec:
+      containers:
+        - name: examples
+          image: cr.yandex/crpmiu1h5mdish4lqlu2/examples:0.0.1
+          ports:
+            - containerPort: 80
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: examples-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: examples
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30001
