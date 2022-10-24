@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: message-proxy
-          image: cr.yandex/crpmiu1h5mdish4lqlu2/message-proxy:0.0.3
+          image: cr.yandex/crpmiu1h5mdish4lqlu2/message-proxy:0.0.4
           ports:
             - containerPort: 3000
           env:

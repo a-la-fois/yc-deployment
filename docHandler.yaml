@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: doc-handler
-          image: cr.yandex/crpmiu1h5mdish4lqlu2/doc-handler:0.0.2
+          image: cr.yandex/crpmiu1h5mdish4lqlu2/doc-handler:0.0.3
           ports:
             - containerPort: 3000
           env:

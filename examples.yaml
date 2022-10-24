@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: examples
-          image: cr.yandex/crpmiu1h5mdish4lqlu2/examples:0.0.2
+          image: cr.yandex/crpmiu1h5mdish4lqlu2/examples:0.1.0
           ports:
             - containerPort: 80
 
