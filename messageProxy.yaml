@@ -5,7 +5,7 @@ metadata:
   labels:
     app: message-proxy
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: message-proxy
@@ -20,21 +20,20 @@ spec:
     spec:
       containers:
         - name: message-proxy
-          image: cr.yandex/crpmiu1h5mdish4lqlu2/message-proxy:0.0.4
+          image: ghcr.io/a-la-fois/message-proxy:0.0.34
           ports:
             - containerPort: 3000
           env:
             - name: KAFKA_USERNAME
               valueFrom: 
                 secretKeyRef:
-                  name: kafka-secret 
-                  key: username
+                  name: prod-secrets
+                  key: kafka_username
             - name: KAFKA_PASSWORD
               valueFrom: 
                 secretKeyRef:
-                  name: kafka-secret 
-                  key: password
-         
+                  name: prod-secrets
+                  key: kafka_password
             - name: KAFKA_CHANGES_TOPIC 
               valueFrom:
                 configMapKeyRef:
@@ -49,12 +48,14 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: config
-                  key: kafka-ca-path
+                  key: yc-ca-path
             - name: KAFKA_SASL_MECHANISM 
               valueFrom:
                 configMapKeyRef:
                   name: config
                   key: kafka-sasl-mechanism
+            - name: DAPR_SIDECAR_HOST
+              value: "localhost"
 
           volumeMounts:
             - name: yc-cert
@@ -76,12 +77,33 @@ kind: Service
 metadata:
   name: message-proxy-service
 spec:
-  type: LoadBalancer
   selector:
     app: message-proxy
   ports:
     - protocol: TCP
-      port: 3000
+      port: 80
       targetPort: 3000
-      nodePort: 30000
 
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: message-proxy-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - ws.alafois.dev
+      secretName: tls-secret
+  rules:
+    - host: ws.alafois.dev
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: message-proxy-service
+              port:
+                number: 80

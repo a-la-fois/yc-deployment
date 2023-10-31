@@ -5,7 +5,7 @@ metadata:
   labels:
     app: doc-handler
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: doc-handler
@@ -20,15 +20,15 @@ spec:
     spec:
       containers:
         - name: doc-handler
-          image: cr.yandex/crpmiu1h5mdish4lqlu2/doc-handler:0.0.3
+          image: ghcr.io/a-la-fois/doc-handler:0.0.34
           ports:
             - containerPort: 3000
           env:
             - name: MONGO_URI 
               valueFrom:
                 secretKeyRef:
-                  name: mongodb-secret
-                  key: uri
+                  name: prod-secrets
+                  key: mongo_uri
             - name: SERVER_HOST 
               valueFrom:
                 configMapKeyRef:
@@ -39,6 +39,20 @@ spec:
                 configMapKeyRef:
                   name: config
                   key: doc-handler-port
+            - name: MONGO_SSL_CA_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: yc-ca-path
 
-
-
+          volumeMounts:
+            - name: yc-cert
+              mountPath: "/config"
+              readOnly: true
+      volumes:
+        - name: yc-cert
+          configMap:
+            name: config
+            items:
+              - key: 'YandexCA.crt'
+                path: 'YandexCA.crt'
