@@ -3,8 +3,8 @@ kind: ConfigMap
 metadata:
   name: config
 data:
-  kafka-hosts: "rc1a-90u0593i7valqh5d.mdb.yandexcloud.net:9091"
-  kafka-ca-path: "/config/YandexCA.crt"
+  kafka-hosts: "rc1a-oubonnvg07beahk2.mdb.yandexcloud.net,rc1a-vkeidter1k8g71v3.mdb.yandexcloud.net,rc1b-isn39n10u769sjk5.mdb.yandexcloud.net,rc1b-sb97oc4m4815efch.mdb.yandexcloud.net:9091"
+  yc-ca-path: "/config/YandexCA.crt"
   kafka-changes-topic: "changes"
   kafka-sasl-mechanism: "SCRAM-SHA-512"
 
@@ -71,3 +71,4 @@ data:
     Pj78bnC5yCw8P5YylR45LdxLzLO68unoXOyFz1etGXzszw8lJI9LNubYxk77mK8H
     LpuQKbSbIERsmR+QqQ==
     -----END CERTIFICATE-----
+

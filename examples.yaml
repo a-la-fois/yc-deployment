@@ -16,9 +16,10 @@ spec:
     spec:
       containers:
         - name: examples
-          image: cr.yandex/crpmiu1h5mdish4lqlu2/examples:0.1.0
+          image: ghcr.io/a-la-fois/examples:0.0.37-alpha.3
           ports:
             - containerPort: 80
+          imagePullPolicy: Always
 
 
 ---
@@ -28,11 +29,33 @@ kind: Service
 metadata:
   name: examples-service
 spec:
-  type: LoadBalancer
   selector:
     app: examples
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30001
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: examples-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - alafois.dev
+      secretName: tls-secret
+  rules:
+    - host: alafois.dev
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: examples-service
+              port:
+                number: 80

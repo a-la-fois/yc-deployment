@@ -2,14 +2,14 @@
 ## Overview
 We are using [Yandex Cloud](https://cloud.yandex.ru/) as our cloud provider.
 This repo is an example for deploying A la fois to k8s cluster.
-For now we use managed Kafka cluster, however mongo and redis are deployed in a k8s cluster. We are planning to use managed solutions for redis and mongo in the future.
+For now we use managed Kafka cluster, mongo and redis.
 
 ### Architecrute
 ![](/img/a-la-fois_architecture.png)
 // TODO
 
-## Setup
-1. Install Dapr to a Kubernetes cluster. 
+## [WIP] Setup
+<!-- 1. Install Dapr to a Kubernetes cluster. 
 
     ```shell
     dapr init -k
@@ -107,4 +107,4 @@ redis-service           ClusterIP      10.96.208.1     <none>          6379/TCP 
 ```
 Our message proxy service external IP is `130.193.53.53`
 Use this IP in the docClient to connect to A la fois.
-
+ -->
